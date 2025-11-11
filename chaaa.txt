@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil Profesional</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Lucide Icons para los iconos -->
+    <script type="module" src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Configuración de la fuente Inter para un look profesional */
+        :root {
+            /* Variables de Color para Modo CLARO (Solar) */
+            --color-primary: #0077B5; 
+            --color-secondary: #2C3E50; /* Texto principal oscuro */
+            --color-text-secondary: #4A5568; /* Texto secundario gris */
+            --color-bg-main: #F4F6F9; /* Fondo de la página */
+            --color-bg-card: #FFFFFF; /* Fondo de tarjetas */
+            --color-border: #E2E8F0; /* Borde y divisor */
+        }
+
+        /* Estilos específicos para el Modo OSCURO (Nocturno) - Se aplican cuando <body> tiene la clase 'dark' */
+        .dark {
+            /* Variables de Color para Modo OSCURO */
+            --color-primary: #52B5FF; /* Primario más brillante para contraste */
+            --color-secondary: #EAECEE; /* Texto principal claro */
+            --color-text-secondary: #A0AEC0; /* Texto secundario más oscuro */
+            --color-bg-main: #1A202C; /* Fondo oscuro principal */
+            --color-bg-card: #2D3748; /* Tarjetas oscuras */
+            --color-border: #4A5568; /* Borde y divisor oscuro */
+        }
+
+        /* Configuración de color principal del Body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-main); /* Usa variable */
+            color: var(--color-secondary); /* Usa variable */
+            scroll-behavior: smooth;
+            /* Transición para el cambio de modo en el fondo y texto */
+            transition: background-color 0.5s ease, color 0.5s ease; 
+        }
+
+        /* Estilo para la navegación activa */
+        .nav-link.active {
+            font-weight: 600;
+            color: var(--color-primary); /* Usa variable */
+            border-bottom: 3px solid var(--color-primary); /* Usa variable */
+        }
+        
+        /* Estilo para los botones principales */
+        .btn-primary {
+            background-color: var(--color-primary); /* Usa variable */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            /* Colores de hover se ajustan ligeramente al primario */
+            background-color: #005f91; /* Un poco más oscuro que el primario claro */
+        }
+        /* Ajuste de hover para modo oscuro */
+        .dark .btn-primary:hover {
+            background-color: #3f9be0; 
+        }
+
+        /* Utilidad para la cabecera (Header) */
+        .page-header {
+            background-color: var(--color-bg-card); /* Usa variable (Fondo de tarjeta/Header) */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        .dark .page-header {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Utilidad para las tarjetas (Aplica la variable --bg-card) */
+        .card {
+            background-color: var(--color-bg-card); /* Usa variable */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            border: 1px solid var(--color-border); /* Usa variable para el borde sutil */
+        }
+        
+        /* Colores de texto y borde que usan variables para consistencia */
+        .text-main-color { color: var(--color-secondary); }
+        .text-sub-color { color: var(--color-text-secondary); }
+        .text-primary-color { color: var(--color-primary); }
+        .border-main-color { border-color: var(--color-border); }
+    </style>
+</head>
+<body class="transition duration-500">
+
+    <!-- Barra de Navegación (Header) -->
+    <header class="page-header sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="#inicio" class="text-2xl font-bold text-main-color hover:text-primary-color transition duration-300">
+                MI LinkedIn
+            </a>
+            <div class="flex space-x-4 md:space-x-8 items-center">
+                <!-- Los nav-links ahora solo usan las clases genéricas de color y el activo usa la variable -->
+                <a href="#inicio" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="inicio">Inicio</a>
+                <a href="#sobre-mi" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="sobre-mi">Sobre Mí</a>
+                <a href="#proyectos" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="proyectos">Proyectos</a>
+                <a href="#habilidades" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="habilidades">Habilidades</a>
+                <a href="#contacto" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="contacto">Contacto</a>
+
+                <!-- Interruptor de Modo Oscuro/Solar -->
+                <button id="themeToggle" class="p-2 rounded-full bg-gray-100 text-sub-color hover:bg-gray-200 transition duration-300 dark:bg-gray-700 dark:hover:bg-gray-600" title="Alternar Modo Oscuro/Claro">
+                    <i data-lucide="sun" id="sunIcon" class="w-5 h-5 transition-transform duration-300"></i>
+                    <i data-lucide="moon" id="moonIcon" class="w-5 h-5 transition-transform duration-300 hidden"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+
+        <!-- 1. Sección de Inicio (Hero) -->
+        <section id="inicio" class="py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="md:w-3/5 text-center md:text-left">
+                <p class="text-lg text-sub-color mb-2">¡Hola! Soy</p>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight text-main-color">
+                    Dylan Alberto Gonzalez Jurado
+                </h1>
+                <h2 class="2xl text-sub-color mb-6 font-light">
+                    Estudiante de Administración e Innovación de Negocios
+                </h2>
+                <p class="text-lg text-sub-color mb-8 max-w-xl mx-auto md:mx-0">
+                    Tengo 19 años y, como estudiante, me dedico a explorar soluciones que combinan la administración con la innovación de negocios. Me apasiona transformar ideas complejas en productos funcionales y accesibles.
+                </p>
+            </div>
+            <div class="md:w-2/5 flex justify-center">
+                <!-- Placeholder de Imagen de Perfil -->
+                <div class="w-64 h-64 md:w-80 md:h-80 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-xl transition duration-500">
+                    
+                    <!-- 🚨🚨🚨 RUTA DE LA IMAGEN ACTUALIZADA A UN PLACEHOLDER PÚBLICO GARANTIZADO 🚨🚨🚨 -->
+                    <!-- NOTA: Los enlaces de archivos subidos previamente no estaban funcionando. Este placeholder sí lo hará. -->
+                    <img src="https://placehold.co/800x800/0077B5/FFFFFF?text=D.G." alt="Placeholder de Foto de perfil de Dylan Gonzalez" class="object-cover w-full h-full">
+                    
+                </div>
+            </div>
+        </section>
+
+        <div class="border-t border-main-color my-8 transition duration-500"></div>
+
+        <!-- 2. Sección Sobre Mí -->
+        <section id="sobre-mi" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Sobre Mí</h2>
+            <div class="card">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <!-- TEXTO ACTUALIZADO CON STRONG TAGS -->
+                        <p class="text-sub-color mb-4 leading-relaxed">
+                            Mi trayectoria laboral ha estado profundamente ligada a un <strong>negocio familiar de comida</strong>, donde he adquirido una experiencia de 19 años en la gestión operativa y administrativa desde que nací. Actualmente, me encargo de áreas críticas como la <strong>parte financiera y legal</strong>.
+                        </p>
+                        <p class="text-sub-color mb-4 leading-relaxed">
+                            Mi enfoque en la innovación de negocios me ha llevado a generar ideas creativas, como la <strong>creación de nuevos menús y encuestas de satisfacción</strong>. Además, he complementado mi formación con un curso especializado en <strong>programación con Inteligencia Artificial</strong>, buscando fusionar la experiencia tradicional de negocios con soluciones tecnológicas avanzadas.
+                        </p>
+                        <div class="mt-6 flex space-x-4">
+                            <!-- Instagram (Link que ahora usan todos los iconos) -->
+                            <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="text-sub-color hover:text-blue-700 transition duration-300 dark:hover:text-blue-500" title="Perfil de Instagram">
+                                <i data-lucide="instagram" class="w-6 h-6 inline-block"></i>
+                            </a>
+                            <!-- Facebook (Link real) -->
+                            <a href="https://www.facebook.com/share/1VcsY17kop/?mibextid=wwXIfr" target="_blank" class="text-sub-color hover:text-blue-600 transition duration-300 dark:hover:text-blue-400" title="Perfil de Facebook">
+                                <i data-lucide="facebook" class="w-6 h-6 inline-block"></i>
+                            </a>
+                            <!-- TikTok (Link real) -->
+                            <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="text-sub-color hover:text-main-color transition duration-300" title="Perfil de TikTok">
+                                <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
+                                <i data-lucide="video" class="w-6 h-6 inline-block"></i> 
+                            </a>
+                            <!-- Email (Se mantiene el enlace de correo) -->
+                            <a href="mailto:dylan.gonzalez@ejemplo.com" class="text-sub-color hover:text-red-600 transition duration-300 dark:hover:text-red-400" title="Email de Contacto">
+                                <i data-lucide="mail" class="w-6 h-6 inline-block"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="graduation-cap" class="text-primary-color w-6 h-6"></i>
+                            <!-- EDUCACIÓN ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Educación: Licenciatura en Ingeniería de Sistemas, Universidad La Salle</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="briefcase" class="text-primary-color w-6 h-6"></i>
+                            <!-- EXPERIENCIA ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Experiencia: 12 años en el tema de restaurante</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="globe" class="text-primary-color w-6 h-6"></i>
+                            <!-- UBICACIÓN ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Ubicación: Ciudad de México, México</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Sección de Proyectos -->
+        <!-- NOTA: Esta sección usa colores más específicos (gray-50/gray-700) para darle un ligero contraste con el fondo de la página, por lo que mantendremos el dualismo dark: para esos elementos hijos. -->
+        <section id="proyectos" class="py-16 bg-white dark:bg-gray-900 rounded-xl mb-8 p-6 md:p-10 shadow-lg transition duration-500">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Proyectos Destacados</h2>
+            
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                
+                <!-- Tarjeta de Proyecto 1: Educación Financiera -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="banknote" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Educación Financiera para Menores</h3>
+                    <p class="text-sub-color mb-4 text-sm">Creación de un programa curricular enfocado en la enseñanza de conceptos básicos de finanzas, ahorro e inversión para jóvenes.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Educación</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Finanzas</span>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Curriculum</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Proyecto 2: Negocio de Repostería -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="cake" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Negocio de Repostería (Emprendimiento)</h3>
+                    <p class="text-sub-color mb-4 text-sm">Gestión de una microempresa de repostería: desde la producción y logística hasta la estrategia de marketing digital y ventas.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300">Emprendimiento</span>
+                        <span class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-orange-900 dark:text-orange-300">Ventas</span>
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-gray-600 dark:text-gray-300">Logística</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Proyecto 3: Fabricación y Diseño de Gorras -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="hat-off" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Fabricación y Diseño de Gorras</h3>
+                    <p class="text-sub-color mb-4 text-sm">Proyecto enfocado en la cadena de suministro, desde el diseño y la fabricación de productos textiles hasta la comercialización de la marca.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Diseño</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">Producción</span>
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Comercio</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Proyecto 4: IA para Restaurante -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="zap" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Implementación de IA para restaurante</h3>
+                    <p class="text-sub-color mb-4 text-sm">Desarrollo de un componente de Inteligencia Artificial (ej. chatbot o recomendador) para mejorar la interacción y la experiencia del usuario en una web.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">IA/ML</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Programación</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">UX</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Sección de Habilidades (Skills) -->
+        <section id="habilidades" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Habilidades y Competencias Clave</h2>
+            <div class="card">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Columna 1: Gestión Empresarial y Operaciones (Restaurante y Finanzas) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="building-2" class="w-6 h-6 mr-2"></i> Gestión Empresarial y Finanzas</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Administración y Operación de Negocios</strong> (Experiencia de 19 años en familiar).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Control Financiero y Legal</strong> (Gestión de recursos y cumplimiento normativo).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Educación Financiera</strong> (Desarrollo curricular para menores).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 2: Emprendimiento y Producción (Repostería y Gorras) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="lightbulb" class="w-6 h-6 mr-2"></i> Emprendimiento y Cadenas de Suministro</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Gestión de Microempresas</strong> (Repostería: producción, marketing y ventas).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Cadena de Suministro y Logística</strong> (Desde la fabricación de gorras hasta la comercialización).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Diseño de Productos</strong> (Creación de nuevos menús y diseño de productos textiles).</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Columna 3: Innovación y Desarrollo Digital (IA y Web) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="zap" class="w-6 h-6 mr-2"></i> Innovación y Desarrollo Digital</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Programación con Inteligencia Artificial</strong> (Aplicación de modelos en negocios).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Desarrollo Web</strong> (Conocimiento en arquitectura para implementación de IA).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Experiencia del Usuario (UX)</strong> (Diseño de encuestas y optimización de interacción).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Sección de Contacto -->
+        <section id="contacto" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Hablemos</h2>
+            <div class="card max-w-2xl mx-auto">
+                <p class="text-center text-sub-color mb-6">Estoy disponible para nuevos proyectos y oportunidades. ¡Envíame un mensaje!</p>
+
+                <!-- BLOQUE DE CONEXIÓN DIRECTA (REDES SOCIALES Y CONTACTO) -->
+                <div class="mb-10 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-main-color">
+                    <h4 class="text-xl font-semibold text-center mb-6 text-main-color">Conéctate Directamente</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                        
+                        <!-- Instagram (Link Principal) -->
+                        <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir al Instagram principal">
+                            <i data-lucide="instagram" class="w-6 h-6 text-pink-500 group-hover:text-pink-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Instagram</span>
+                        </a>
+                        
+                        <!-- WhatsApp (USA MODAL) -->
+                        <a href="#" id="openWhatsappModal" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Abrir chat de WhatsApp">
+                            <i data-lucide="message-circle" class="w-6 h-6 text-green-500 group-hover:text-green-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">WhatsApp</span>
+                        </a>
+
+                        <!-- Teléfono (USA MODAL) -->
+                        <a href="#" id="openCallModal" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Mostrar número para llamar">
+                            <i data-lucide="phone" class="w-6 h-6 text-primary-color group-hover:text-blue-700"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Teléfono</span>
+                        </a>
+
+                        <!-- Facebook (ACTUALIZADO) -->
+                        <a href="https://www.facebook.com/share/1VcsY17kop/?mibextid=wwXIfr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir a Facebook">
+                            <i data-lucide="facebook" class="w-6 h-6 text-blue-600 group-hover:text-blue-700"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Facebook</span>
+                        </a>
+
+                        <!-- X (Twitter) -->
+                        <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir al Instagram (X)">
+                            <i data-lucide="twitter" class="w-6 h-6 text-main-color group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">X (IG)</span>
+                        </a>
+
+                        <!-- TikTok (ACTUALIZADO) -->
+                        <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir a TikTok">
+                            <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
+                            <i data-lucide="video" class="w-6 h-6 text-red-500 group-hover:text-red-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">TikTok</span>
+                        </a>
+                    </div>
+                    <!-- NOTA IMPORTANTE ACTUALIZADA -->
+                    <p class="text-xs text-sub-color text-center mt-4">
+                        **ATENCIÓN**: El ícono de **Teléfono** y **WhatsApp** abren un menú de confirmación antes de proceder. Los demás íconos de redes sociales redirigen a sus plataformas correspondientes.
+                    </p>
+                </div>
+                <!-- FIN BLOQUE DE CONEXIÓN DIRECTA -->
+
+                <form action="mailto:dylanalberto270506@gmail.com" method="POST" enctype="text/plain" id="contactForm" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-sub-color mb-1">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required class="w-full p-3 border border-main-color rounded-lg focus:ring-primary-color focus:border-primary-color transition duration-150 bg-white dark:bg-gray-700 text-main-color" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-sub-color mb-1">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full p-3 border border-main-color rounded-lg focus:ring-primary-color focus:border-primary-color transition duration-150 bg-white dark:bg-gray-700 text-main-color" placeholder="Escribe por si tienes alguna duda"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full text-center py-3 font-semibold">
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </section>
+        
+        <!-- Modal de Marcado de Teléfono -->
+        <div id="callModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+                <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Llamada Directa</h3>
+                <p class="text-center text-sub-color mb-6">¿Deseas contactar a Dylan Gonzalez directamente?</p>
+
+                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg mb-6 text-center border border-main-color">
+                    <p class="text-3xl font-extrabold text-primary-color">5539082013</p>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <!-- Botón de Marcar que usa el link tel: -->
+                    <a href="tel:5539082013" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
+                        <i data-lucide="phone-call" class="w-5 h-5 mr-2"></i>
+                        Marcar Ahora
+                    </a>
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeCallModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de WhatsApp (Chatear o Cancelar) -->
+        <div id="whatsappModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+                <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Iniciar Conversación</h3>
+                <p class="text-center text-sub-color mb-6">Serás redirigido a WhatsApp para chatear con el número:</p>
+
+                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg mb-6 text-center border border-main-color">
+                    <p class="text-3xl font-extrabold text-green-500">5545371488</p>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <!-- Botón de Chatear Ahora que usa el link wa.me -->
+                    <a href="https://wa.me/5545371488" target="_blank" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
+                        <i data-lucide="message-square" class="w-5 h-5 mr-2"></i>
+                        Chatear Ahora
+                    </a>
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeWhatsappModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary dark:bg-gray-900 mt-12 py-8 transition duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white dark:text-gray-300">
+            <p class="text-sm">&copy; 2025 Dylan Alberto Gonzalez Jurado. Todos los derechos reservados.</p>
+            <p class="text-xs mt-2">Diseñado con <i data-lucide="heart" class="w-3 h-3 inline-block text-red-400"></i> y Tailwind CSS.</p>
+        </div>
+    </footer>
+
+    <!-- Script para la funcionalidad JS -->
+    <script>
+        // --- LÓGICA DEL INTERRUPTOR DE TEMA (MODO OSCURO/SOLAR) ---
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const body = document.body;
+        const localStorageKey = 'theme';
+
+        // 1. Función para establecer el tema
+        function setTheme(isDark) {
+            if (isDark) {
+                body.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem(localStorageKey, 'dark');
+            } else {
+                body.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem(localStorageKey, 'light');
+            }
+        }
+
+        // 2. Comprobar la preferencia del sistema y de localStorage al cargar
+        function loadTheme() {
+            const storedTheme = localStorage.getItem(localStorageKey);
+            
+            // Si hay una preferencia guardada, úsala.
+            if (storedTheme) {
+                setTheme(storedTheme === 'dark');
+            } else {
+                // Si no hay preferencia, usa la preferencia del sistema operativo (media query)
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(prefersDark);
+            }
+        }
+
+        // 3. Manejar el click del interruptor
+        themeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = body.classList.contains('dark');
+            // Cambia al tema opuesto
+            setTheme(!isCurrentlyDark);
+        });
+        
+        // --- LÓGICA DE NAVEGACIÓN Y SCROLL ---
+
+        // Script para activar el enlace de navegación según la sección visible
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 70; 
+                const sectionHeight = section.clientHeight;
+                
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Se asegura que si 'current' es vacío (al inicio de la página), 'inicio' se resalte
+                if (link.getAttribute('data-section') === current || (current === '' && link.getAttribute('data-section') === 'inicio')) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Script para manejar clics y desplazamiento suave
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); 
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 70, 
+                        behavior: 'smooth'
+                    });
+
+                    history.pushState(null, '', `#${targetId}`);
+                }
+                
+                // Quita 'active' de todos los enlaces y lo agrega al clickeado para el resaltado inmediato
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // --- LÓGICA DE MODALES (Teléfono y WhatsApp) ---
+        
+        const callModal = document.getElementById('callModal');
+        const openCallModalBtn = document.getElementById('openCallModal');
+        const closeCallModalBtn = document.getElementById('closeCallModal');
+        const whatsappModal = document.getElementById('whatsappModal');
+        const openWhatsappModalBtn = document.getElementById('openWhatsappModal');
+        const closeWhatsappModalBtn = document.getElementById('closeWhatsappModal');
+
+        // Función reutilizable para mostrar/ocultar modales con transiciones
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('div').classList.remove('translate-y-4');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('translate-y-4');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); 
+            }
+        }
+
+        // Event Listeners para Modal de Llamada
+        openCallModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleModal(callModal, true);
+        });
+        closeCallModalBtn.addEventListener('click', () => {
+            toggleModal(callModal, false);
+        });
+        callModal.addEventListener('click', (e) => {
+            if (e.target === callModal) {
+                toggleModal(callModal, false);
+            }
+        });
+
+        // Event Listeners para Modal de WhatsApp
+        openWhatsappModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleModal(whatsappModal, true);
+        });
+        closeWhatsappModalBtn.addEventListener('click', () => {
+            toggleModal(whatsappModal, false);
+        });
+        whatsappModal.addEventListener('click', (e) => {
+            if (e.target === whatsappModal) {
+                toggleModal(whatsappModal, false);
+            }
+        });
+        
+        // Inicializar Lucide Icons, cargar tema y disparar scroll al cargar
+        window.onload = function() {
+            lucide.createIcons();
+            loadTheme(); // Carga la preferencia de tema guardada o del sistema
+            window.dispatchEvent(new Event('scroll'));
+        };
+    </script>
+</body>
+</html>
